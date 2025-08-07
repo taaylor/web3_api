@@ -32,10 +32,22 @@ class TokeConfig(BaseModel):
         frozen=True,
         description="Schema ERC20 ABI",
     )
+    provider: str = Field(default="https://polygon-rpc.com", frozen=True)
+
+
+class EthSupplier(BaseModel):
+    host: str = "api.etherscan.io"
+    path: str = "v2/api"
+    api_key: str = "D1XPBCVEY21B1Y9DP9K5PYM8GVXUJG14CV"
+    chain_id: int = 137
+
+    @property
+    def get_url(self) -> str:
+        return f"https://{self.host}/{self.path}"
 
 
 class AppConfig(BaseSettings):
-    debug: bool = Field(default=True)
+    debug: bool = Field(default=True, frozen=True)
     project_name: str = Field(default="polygon-api", frozen=True)
     docs_url: str = Field(default="/polygon/openapi", frozen=True)
     openapi_url: str = Field(default="/polygon/openapi.json", frozen=True)
@@ -43,6 +55,7 @@ class AppConfig(BaseSettings):
 
     token: TokeConfig = TokeConfig()
     server: Server = Server()
+    eth_supplier: EthSupplier = EthSupplier()
 
     model_config = SettingsConfigDict(
         env_file=ENV_FILE,

@@ -1,3 +1,4 @@
+from logging import INFO
 from logging import config as logging_config
 from typing import Any
 
@@ -59,6 +60,9 @@ class LoggerSettings(BaseSettings):
                     "handlers": ["access"],
                     "level": self.log_level,
                     "propagate": False,
+                },
+                "web3": {
+                    "level": INFO,
                 },
             },
         }
